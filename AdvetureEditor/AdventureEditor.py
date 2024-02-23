@@ -74,7 +74,6 @@ def playNode(game, currentGame):
             print("Invalid reponse please try again.")
         return nextNode
 def playGame(game):
-    game = getDefaultGame()
     currentGame = "start"
     keepGoing = True
     while keepGoing:
@@ -83,38 +82,32 @@ def playGame(game):
             keepGoing = False
 
 def saveGame(game):
-    saveFile = open("game.json", "w")
+    fileName = "game.json"
+    saveFile = open(fileName, "w")
     json.dump(game, saveFile, indent = 2)
-    print(json.dump(game, saveFile, indent = 2))
     saveFile.close()
+    print(json.dumps(game, indent = 2))
+
+
 
 def loadGame():
-    loadFile = open("game.json", "r")
+    fileName = "game.json"
+    loadFile = open(fileName, "r")
     game = json.load(loadFile)
     loadFile.close()
     return game
 
 def editNode(game):
     print("These are the current node names in use")
-	#given the current game structure...	list all the current node names in the dictionary of “game”
     print(json.dumps(game, indent=2))
-	#create variable “nodeName” that will list out all current node names
     for nodeName in game.keys():
         print(f"{nodeName}")
-	#allow the input for a "newNodeName"
     newNodeName = input("Please input a new name. If the node name already exists no new node will be added.: ")
-    #if "newNodeName" already exists in the keys within the dictionary of "game"
     if newNodeName in game.keys():
         newNode = game[newNodeName]
     else:
         newNode = ["", "", "", "", ""]
-	#copy that node to newNode
-	#otherwise...
-	#create newNode with empty data
-	#for each key in the dictionary it will follow the tuple of (description, menuA, nodeA, menuB, nodeB)
     (description, menuA, nodeA, menuB, nodeB) = newNode
-    #use editField() to allow user to edit each node
-	#return the the new game that is now using the new edited node
     newDescription = getField("description", description)
     newMenuA = getField("Menu A", menuA)
     newNodeA = getField("Node A", nodeA)
@@ -124,16 +117,10 @@ def editNode(game):
     game[newNodeName] = (newDescription, newMenuA, newNodeA, newMenuB, newNodeB)
     return game
 def getField(prompt, currentValue):
-    #	get a field name
     newVal = input(f"{prompt} ({currentValue}): ")
     if newVal == "":
         newVal = currentValue
     return newVal
-#	print the field's current value
-#	if the user presses 'enter' immediately
-#	retain the current value
-#	otherwise...
-#	use the new value
 
   
 main()
